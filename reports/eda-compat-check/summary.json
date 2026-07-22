@@ -1,0 +1,69 @@
+{
+  "input": "C:\\Users\\Usuario\\Desktop\\Proyectos\\Proyectos Python\\techmind-prototype\\data\\arxiv.csv",
+  "rows": 200094,
+  "columns": [
+    "paper_id",
+    "title",
+    "abstract",
+    "year",
+    "primary_category",
+    "categories"
+  ],
+  "sample_size": 10,
+  "random_state": 42,
+  "dtypes": {
+    "paper_id": "object",
+    "title": "object",
+    "abstract": "object",
+    "year": "object",
+    "primary_category": "object",
+    "categories": "object",
+    "year_parsed": "int32",
+    "title_length": "int64",
+    "abstract_length": "int64"
+  },
+  "nulls": {
+    "paper_id": 0,
+    "title": 0,
+    "abstract": 0,
+    "year": 0,
+    "primary_category": 0,
+    "categories": 0
+  },
+  "duplicate_counts": {
+    "paper_id": 0,
+    "title": 704,
+    "abstract": 451,
+    "rows_completely_duplicated": 0
+  },
+  "incomplete_records": 0,
+  "unique_primary_categories": 40,
+  "year_min": 1990,
+  "year_max": 2023,
+  "text_length_means": {
+    "title_length": 71.78225733905064,
+    "abstract_length": 1114.21330974442
+  },
+  "top_primary_categories": {
+    "cs.LG": 19312,
+    "cs.CR": 9539,
+    "cs.SE": 9126,
+    "cs.IT": 9109,
+    "cs.DS": 8893,
+    "cs.CV": 8843,
+    "cs.NI": 8627,
+    "cs.LO": 8105,
+    "cs.DC": 7879,
+    "cs.CL": 7107,
+    "cs.HC": 6853,
+    "cs.CY": 6580,
+    "cs.IR": 6540,
+    "cs.SI": 6281,
+    "cs.GT": 6248,
+    "cs.AI": 5832,
+    "cs.DB": 5192,
+    "cs.NE": 5006,
+    "cs.CC": 4612,
+    "cs.SD": 4560
+  }
+}

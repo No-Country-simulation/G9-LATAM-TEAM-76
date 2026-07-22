@@ -1,0 +1,59 @@
+:root {
+  --techmind-primary: #0d6efd;
+  --techmind-background: #f6f8fc;
+  --techmind-text: #172033;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--techmind-text);
+  background: var(--techmind-background);
+}
+
+.hero {
+  max-width: 700px;
+}
+
+.eyebrow {
+  color: var(--techmind-primary);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.form-control {
+  border-color: #dce3ee;
+}
+
+.form-control:focus {
+  border-color: var(--techmind-primary);
+  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 15%);
+}
+
+.result-card {
+  border: 1px solid #e6ebf2 !important;
+  background: #fff;
+}
+
+.result-card-primary {
+  border-left: 5px solid var(--techmind-primary) !important;
+}
+
+.result-label {
+  color: #6c788d;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.keyword-badge {
+  padding: 0.65rem 0.9rem;
+  color: #084298;
+  background: #e7f1ff;
+  font-size: 0.9rem;
+}
+
+code {
+  color: #084298;
+}
