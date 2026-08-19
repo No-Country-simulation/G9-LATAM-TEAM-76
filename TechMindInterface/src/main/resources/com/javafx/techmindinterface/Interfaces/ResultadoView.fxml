@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" spacing="20.0" style="-fx-background-color: #0F172A; -fx-padding: 30;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafx.techmindinterface.ResultadoController">
+    <children>
+        <!-- Encabezado / Branding -->
+        <HBox alignment="CENTER_LEFT" spacing="15.0">
+            <children>
+                <Label style="-fx-text-fill: #38BDF8; -fx-font-size: 24px; -fx-font-weight: bold;" text="TechMind AI" />
+                <Label style="-fx-text-fill: #64748B; -fx-font-size: 20px;" text="|" />
+                <Label style="-fx-text-fill: #F8FAFC; -fx-font-size: 18px; -fx-font-weight: bold;" text="Resultado del Análisis" />
+            </children>
+        </HBox>
+
+        <!-- Tarjeta Principal: Categoría y Confianza -->
+        <VBox alignment="CENTER" spacing="12.0" style="-fx-background-color: #1E293B; -fx-background-radius: 12; -fx-padding: 25; -fx-border-color: #334155; -fx-border-radius: 12;">
+            <children>
+                <Label style="-fx-text-fill: #94A3B8; -fx-font-size: 13px; -fx-text-transform: uppercase;" text="Categoría Predicha" />
+                <Label fx:id="lblCategoria" alignment="CENTER" style="-fx-text-fill: #38BDF8; -fx-font-size: 26px; -fx-font-weight: bold;" text="Cargando..." textAlignment="CENTER" wrapText="true" />
+
+                <!-- Badge Nivel de Confianza -->
+                <HBox alignment="CENTER" maxWidth="-Infinity" spacing="8.0" style="-fx-background-color: #0F172A; -fx-background-radius: 20; -fx-padding: 6 18; -fx-border-color: #334155; -fx-border-radius: 20;">
+                    <children>
+                        <Label style="-fx-text-fill: #94A3B8; -fx-font-size: 13px;" text="Nivel de Confianza:" />
+                        <Label fx:id="lblConfianza" style="-fx-text-fill: #4ADE80; -fx-font-size: 14px; -fx-font-weight: bold;" text="0.0%" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Panel Inferior: Idioma y Palabras Clave -->
+        <VBox spacing="16.0" style="-fx-background-color: #1E293B; -fx-background-radius: 12; -fx-padding: 20; -fx-border-color: #334155; -fx-border-radius: 12;" VBox.vgrow="ALWAYS">
+            <children>
+                <!-- Detalle de Idioma -->
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Label style="-fx-text-fill: #94A3B8; -fx-font-weight: bold; -fx-font-size: 14px;" text="Idioma Detectado:" />
+                        <Label fx:id="lblIdioma" style="-fx-text-fill: #F8FAFC; -fx-font-size: 14px;" text="Detectando..." />
+                    </children>
+                </HBox>
+
+                <!-- Contenedor Dinámico de Tags (Palabras Clave) -->
+                <VBox spacing="10.0">
+                    <children>
+                        <Label style="-fx-text-fill: #94A3B8; -fx-font-weight: bold; -fx-font-size: 14px;" text="Palabras Clave Extraídas:" />
+                        <FlowPane fx:id="containerPalabrasClave" hgap="8.0" vgap="8.0" />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+
+        <!-- Acciones / Botón Volver -->
+        <VBox alignment="CENTER">
+            <children>
+                <Button fx:id="btnVolver" onAction="#handleVolverAction" prefHeight="45.0" prefWidth="240.0" style="-fx-background-color: #38BDF8; -fx-text-fill: #0F172A; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;" text="Analizar Otro Documento" />
+            </children>
+        </VBox>
+    </children>
+</VBox>

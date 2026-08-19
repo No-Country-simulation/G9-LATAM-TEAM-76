@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="600.0" prefWidth="800.0" spacing="20.0" style="-fx-background-color: #0F172A; -fx-padding: 30;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.javafx.techmindinterface.HistorialController">
+    <children>
+        <!-- Encabezado / Navigation -->
+        <HBox alignment="CENTER_LEFT" spacing="15.0">
+            <children>
+                <Label style="-fx-text-fill: #38BDF8; -fx-font-size: 24px; -fx-font-weight: bold;" text="TechMind AI" />
+                <Label style="-fx-text-fill: #64748B; -fx-font-size: 20px;" text="|" />
+                <Label style="-fx-text-fill: #F8FAFC; -fx-font-size: 18px; -fx-font-weight: bold;" text="Historial de Clasificaciones" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button onAction="#handleNuevoAnalisis" style="-fx-background-color: #38BDF8; -fx-text-fill: #0F172A; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" text="+ Nuevo Análisis" />
+            </children>
+        </HBox>
+
+        <!-- Barra de Filtros -->
+        <HBox alignment="CENTER_LEFT" spacing="12.0" style="-fx-background-color: #1E293B; -fx-padding: 12 16; -fx-background-radius: 8; -fx-border-color: #334155; -fx-border-radius: 8;">
+            <children>
+                <Label style="-fx-text-fill: #94A3B8; -fx-font-size: 13px; -fx-font-weight: bold;" text="Filtrar por Categoría:" />
+                <ComboBox fx:id="cmbFiltroCategoria" onAction="#handleFiltrar" prefWidth="220.0" style="-fx-background-color: #0F172A; -fx-mark-color: #38BDF8; -fx-border-color: #334155; -fx-border-radius: 6; -fx-background-radius: 6;" />
+                <Button onAction="#cargarDocumentos" style="-fx-background-color: #334155; -fx-text-fill: #F8FAFC; -fx-background-radius: 6; -fx-cursor: hand;" text="🔄 Recargar" />
+            </children>
+        </HBox>
+
+        <!-- Tabla Principal estilizada -->
+        <TableView fx:id="tablaDocumentos" style="-fx-background-color: #1E293B; -fx-control-inner-background: #1E293B; -fx-table-cell-border-color: #334155; -fx-table-header-border-color: #334155; -fx-border-color: #334155; -fx-border-radius: 8; -fx-background-radius: 8;" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colTitulo" prefWidth="240.0" text="Título" />
+                <TableColumn fx:id="colCategoria" prefWidth="180.0" text="Categoría" />
+                <TableColumn fx:id="colFecha" prefWidth="180.0" text="Fecha de Registro" />
+                <TableColumn fx:id="colAccion" prefWidth="100.0" text="Detalles" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+    </children>
+</VBox>
