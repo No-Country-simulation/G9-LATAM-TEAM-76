@@ -1,0 +1,3 @@
+techmind-hackathon.duckdns.org {
+    reverse_proxy techmind:8000
+}
