@@ -1,8 +1,24 @@
 services:
+  proxy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - techmind
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
   techmind:
     build: .
     image: techmind:1.0
     container_name: techmind
     restart: unless-stopped
-    ports:
-      - "80:8000"
+    expose:
+      - "8000"
+
+volumes:
+  caddy_data:
+  caddy_config:
