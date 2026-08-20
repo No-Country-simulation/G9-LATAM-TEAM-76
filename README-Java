@@ -1,0 +1,225 @@
+# 🧠 TechMind - Platform Architecture & Java Documentation
+
+Bienvenido a la documentación técnica del ecosistema **TechMind**. Este documento detalla la arquitectura global del sistema y profundiza exhaustivamente en los componentes desarrollados en **Java**: la API REST backend implementada con **Spring Boot** y el cliente de escritorio desarrollado con **JavaFX**.
+
+---
+
+## 📐 1. Arquitectura General del Sistema
+
+El sistema TechMind opera bajo un modelo de **arquitectura distribuida en 3 capas**, donde cada módulo cumple una responsabilidad específica y delimitada:
+
+```text
+┌────────────────────────────────┐
+│   JavaFX Desktop Interface     │ (Cliente Desktop - Interfaz de Usuario)
+└───────────────┬────────────────┘
+                │ HTTP / REST (JSON)
+                ▼
+┌────────────────────────────────┐
+│   Spring Boot REST Backend     │ (Orquestador, Persistencia y Reglas de Negocio)
+└───────────────┬────────────────┘
+                │ HTTP / REST (JSON)
+                ▼
+┌────────────────────────────────┐
+│  Python FastAPI + ML Model     │ (Microservicio de Inteligencia Artificial)
+└────────────────────────────────┘
+```
+
+### Resumen de Componentes:
+1. **Frontend Desktop (JavaFX):** Interfaz gráfica nativa que captura entradas del usuario, gestiona vistas interactivas y consume los endpoints del Backend en Spring Boot.
+2. **Backend Core (Spring Boot):** Punto central del sistema. Expone la API REST, orquesta el flujo de negocio, persiste el historial de análisis y actúa como cliente HTTP consumiendo el microservicio de IA.
+3. **Microservicio ML (Python FastAPI):** Servicio enfocado en la ejecución del modelo de lenguaje/procesamiento. *(Módulo externo mantenido por el área de Data/IA)*.
+
+---
+
+## ☕ 2. Módulo Backend: API REST (Spring Boot)
+
+El módulo Backend está estructurado bajo los principios de **Clean Architecture** y desarrollo en capas (Controller-Service-Repository-DTO), asegurando bajo acoplamiento y alta mantenibilidad.
+
+### 📂 Estructura de Paquetes (`com.TechMind.Backend`)
+
+```text
+com.TechMind.Backend
+├── config/
+│   ├── CorsConfig.java
+│   └── RestClientConfig.java
+├── controller/
+│   └── DocumentoController.java
+├── dto/
+│   ├── DocumentoResponse.java
+│   ├── FastApiResponse.java
+│   └── TextoAnalisisRequest.java
+├── model/
+│   └── DocumentoProcesado.java
+├── repository/
+│   └── DocumentoRepository.java
+├── service/
+│   ├── DocumentoService.java
+│   └── FastApiService.java
+└── BackendApplication.java
+```
+
+---
+
+### 🔍 Desglose Técnico de Clases
+
+#### 🛡️ Capa de Configuración (`config`)
+* **`CorsConfig.java`**: Configura las políticas de intercambio de recursos de origen cruzado (CORS), permitiendo que clientes externos o interfaces de escritorio locales interactúen con la API sin restricciones de origen.
+* **`RestClientConfig.java`**: Define y expone el cliente HTTP (`RestClient` / `RestTemplate` / `WebClient`) beans administrados por el contenedor de Spring, optimizado para realizar peticiones eficientes hacia la API en FastAPI.
+
+#### 🎮 Capa de Controladores (`controller`)
+* **`DocumentoController.java`**: Expone los puntos de entrada REST (`/api/documentos` o similar).
+  * Recibe las peticiones JSON de la interfaz.
+  * Delega la lógica operacional al `DocumentoService`.
+  * Devuelve respuestas estandarizadas usando la capa DTO en conjunto con códigos de estado HTTP HTTP (`200 OK`, `201 Created`, `400 Bad Request`, `500 Internal Server Error`).
+
+#### 📦 Capa DTO - Data Transfer Objects (`dto`)
+* **`TextoAnalisisRequest.java`**: Encapsula el payload entrante enviado desde JavaFX (ej. texto bruto, título o parámetros de análisis).
+* **`FastApiResponse.java`**: Mapea la respuesta JSON emitida por el microservicio de Python tras procesar el modelo de IA.
+* **`DocumentoResponse.java`**: Formateador final enviado a la interfaz JavaFX con el resultado procesado, métricas, identificador único y estampas de tiempo.
+
+#### 🗄️ Capa de Modelo y Persistencia (`model` & `repository`)
+* **`DocumentoProcesado.java`**: Entidad JPA (`@Entity`) que mapea la tabla en la base de datos de persistencia. Almacena el texto original, el resultado retornado por el modelo, fecha de procesamiento y metadatos relevantes.
+* **`DocumentoRepository.java`**: Interfaz de Spring Data JPA (`JpaRepository<DocumentoProcesado, Long>`) que provee operaciones CRUD predefinidas y consultas personalizadas para la gestión del historial sin requerir SQL manual.
+
+#### ⚙️ Capa de Servicios (`service`)
+* **`FastApiService.java`**: Especializada en la comunicación remota. Construye la solicitud HTTP con los datos necesarios y la envía al microservicio FastAPI de Python, serializando y deserializando las respuestas.
+* **`DocumentoService.java`**: Contiene las reglas del negocio.
+  1. Recibe la petición del controlador.
+  2. Invoca a `FastApiService` para obtener el diagnóstico del modelo de IA.
+  3. Convierte y guarda la información en base de datos mediante `DocumentoRepository`.
+  4. Transforma la entidad guardada en un `DocumentoResponse` para consumo del cliente.
+
+---
+
+## 🎨 3. Módulo Frontend: Interfaz Gráfica (JavaFX)
+
+La interfaz gráfica sigue el patrón **MVC (Model-View-Controller)** haciendo uso de tecnología nativa de JavaFX con layouts definidos en XML mediante archivos `.fxml`.
+
+### 📂 Estructura de Archivos (`com.javafx.techmindinterface`)
+
+```text
+src/main/
+├── java/com/javafx/techmindinterface/
+│   ├── DocumentoModel.java
+│   ├── FormularioAnalisisController.java
+│   ├── HistorialController.java
+│   ├── InitialInterfaceController.java
+│   ├── MainApp.java
+│   ├── ResultadoController.java
+│   └── module-info.java
+└── resources/com/javafx/techmindinterface/
+    ├── Images/
+    │   ├── Imagotipo.png
+    │   ├── TechMind.png
+    │   └── TechMind.svg
+    └── Interfaces/
+        ├── FormularioAnalisisView.fxml
+        ├── HistorialView.fxml
+        ├── InitialInterface.fxml
+        ├── LoadingView.fxml
+        └── ResultadoView.fxml
+```
+
+---
+
+### 🔍 Desglose de Vistas y Controladores
+
+#### 🚀 Punto de Entrada y Módulos
+* **`MainApp.java`**: Hereda de `javafx.application.Application`. Se encarga de inicializar el `Stage` principal, configurar el título de la ventana, cargar la escena inicial y gestionar las dimensiones mínimas de la aplicación.
+* **`module-info.java`**: Declara los módulos requeridos de Java Platform Module System (JPMS) como `javafx.controls`, `javafx.fxml`, `java.net.http` o librerías de mapeo JSON (Jackson/Gson).
+
+#### 🔀 Flujo de Pantallas (Navegación FXML)
+
+| Vista FXML (`resources/Interfaces/`) | Controlador Asociado (`java/...`) | Responsabilidad y Función |
+| :--- | :--- | :--- |
+| **`InitialInterface.fxml`** | `InitialInterfaceController` | **Pantalla de Bienvenida / Home:** Punto de inicio visual con opciones para ir al formulario de análisis o consultar el historial. |
+| **`FormularioAnalisisView.fxml`** | `FormularioAnalisisController` | **Formulario de Análisis:** Captura el texto ingresado por el usuario o carga de archivos. Realiza llamadas asíncronas al Backend Spring Boot. |
+| **`LoadingView.fxml`** | *(N/A)* | **Indicador de Carga:** Vista intermedia con animación/loader mientras se espera la respuesta síncrona/asíncrona del Backend. |
+| **`ResultadoView.fxml`** | `ResultadoController` | **Visualizador de Resultados:** Muestra detalladamente los datos de salida generados por el modelo (clasificación, resúmenes, puntajes). |
+| **`HistorialView.fxml`** | `HistorialController` | **Historial de Registros:** Renderiza un `TableView` / `ListView` consumiendo el endpoint de historial del Backend. |
+
+#### 📊 Modelo de Datos Local (`DocumentoModel.java`)
+Representa la entidad de datos del cliente JavaFX para bindear campos de texto y tablas con observables de JavaFX (`StringProperty`, `LongProperty`), garantizando actualización reactiva de la interfaz.
+
+---
+
+## 🔄 4. Flujo de Datos End-to-End (Paso a Paso)
+
+```text
+[ Usuario ] ──( 1. Inserción de texto )──► [ FormularioAnalisisView.fxml ]
+                                                         │
+                                               ( 2. Captura de evento )
+                                                         ▼
+                                          [ FormularioAnalisisController ]
+                                                         │
+                                               ( 3. HTTP POST JSON )
+                                                         ▼
+                                           [ DocumentoController (Spring) ]
+                                                         │
+                                           [ DocumentoService (Spring) ]
+                                                         │
+                                         ( 4. Consumo vía FastApiService )
+                                                         ▼
+                                            [ FastAPI Python ML Model ]
+                                                         │
+                                              ( 5. Responde con IA )
+                                                         ▼
+                                           [ DocumentoRepository (Spring) ]
+                                                         │
+                                           ( 6. Guarda en Base de Datos )
+                                                         ▼
+[ ResultadoView.fxml ] ◄──( 7. Renderiza )─── [ ResultadoController ]
+```
+
+1. **Entrada de Usuario:** El usuario interactúa con `FormularioAnalisisView.fxml` e ingresa la información requerida.
+2. **Despacho desde JavaFX:** `FormularioAnalisisController` genera un `TextoAnalisisRequest` y efectúa una llamada HTTP POST a Spring Boot.
+3. **Recepcion en Backend:** `DocumentoController` captura la petición y se la pasa a `DocumentoService`.
+4. **Invocación a Python:** `FastApiService` envía los datos formateados a la URL de FastAPI.
+5. **Procesamiento de IA:** El modelo procesa el contenido y responde con un `FastApiResponse`.
+6. **Persistencia:** `DocumentoService` guarda el `DocumentoProcesado` en la base de datos del sistema mediante `DocumentoRepository`.
+7. **Respuesta al Frontend:** El backend responde con `DocumentoResponse`. JavaFX navega hacia `ResultadoView.fxml`, enviándole los datos al `ResultadoController` para su despliegue visual.
+
+---
+
+## 🛠️ 5. Requisitos y Configuración de Entorno
+
+### Requisitos Técnicos:
+* **Java Development Kit (JDK):** Versión 17 o superior.
+* **Apache Maven:** Versión 3.8+.
+* **Base de Datos:** PostgreSQL / MySQL / H2 (según `application.properties`).
+
+### Variables de Configuración (`Backend/src/main/resources/application.properties`):
+```properties
+# Puerto del Servidor Spring Boot
+server.port=8081
+
+# Conexión a Base de Datos
+spring.datasource.url=jdbc:mysql://localhost:3306/techmind_db
+spring.datasource.username=root
+spring.datasource.password=tu_password
+spring.jpa.hibernate.ddl-auto=update
+
+# Configuración del Microservicio de Python (FastAPI)
+fastapi.service.url=http://localhost:8000
+```
+
+---
+
+## 🚀 6. Instrucciones de Compilación y Ejecución
+
+### 1️⃣ Ejecutar el Backend (Spring Boot)
+```bash
+cd Backend
+mvn clean spring-boot:run
+```
+*El servicio iniciará en `http://localhost:8081`.*
+
+### 2️⃣ Ejecutar la Interfaz Desktop (JavaFX)
+```bash
+cd TechMindInterface
+mvn clean javafx:run
+```
+*Se abrirá la ventana gráfica con la pantalla `InitialInterface.fxml`.*
+
+---
+*Documentación técnica del componente Java desarrollada para el proyecto TechMind.*
