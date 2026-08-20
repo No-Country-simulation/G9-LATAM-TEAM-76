@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.env
+.ipynb_checkpoints/
+*.joblib
+.pytest_cache/
+
+# Datasetos descargados y artefactos generados
+data/*.zip
+data/raw/
+data/arxiv_cs_clean.csv
+reports/eda/
+models/
+
+# Entornos y archivos del sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
