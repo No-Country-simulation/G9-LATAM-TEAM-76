@@ -35,13 +35,14 @@ public class DocumentoService {
         doc.setTitulo(request.getTitulo());
         doc.setTextoOriginal(request.getTexto());
 
-        if (iaResponse.getPalabrasClave() != null && !iaResponse.getPalabrasClave().isEmpty()) {
-            doc.setCategoria(iaResponse.getPalabrasClave().get(0));
-        } else if (iaResponse.getIdioma() != null) {
-            doc.setCategoria(iaResponse.getIdioma());
-        } else {
-            doc.setCategoria("Sin Clasificar");
+        String categoria = iaResponse.getCategoria();
+        if (categoria == null || categoria.isEmpty()) {
+            categoria = "Sin Clasificar";
         }
+        doc.setCategoria(categoria);
+
+        // Propagar la probabilidad devuelta por el modelo, si existe
+        doc.setProbabilidad(iaResponse.getProbabilidad());
 
         doc.setDatosJson(jsonResultado);
 
@@ -69,6 +70,7 @@ public class DocumentoService {
                 doc.getTitulo(), // <-- Mapeo hacia el DTO de respuesta
                 doc.getTextoOriginal(),
                 doc.getCategoria(),
+                doc.getProbabilidad(),
                 doc.getDatosJson(),
                 doc.getFechaCreacion()
         );

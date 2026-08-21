@@ -1,0 +1,2 @@
+# Caddyfile removed — backend now exposed directly on port 8081 (no proxy)
+# This file intentionally left blank to avoid accidental use.

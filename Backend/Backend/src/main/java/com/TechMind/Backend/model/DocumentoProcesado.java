@@ -1,8 +1,6 @@
 package com.TechMind.Backend.model;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -22,8 +20,10 @@ public class DocumentoProcesado {
 
     private String categoria;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
+    private Double probabilidad;
+
+    @Lob
+    @Column(name = "datos_json", columnDefinition = "CLOB")
     private String datosJson;
 
     private LocalDateTime fechaCreacion;
@@ -65,6 +65,14 @@ public class DocumentoProcesado {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public Double getProbabilidad() {
+        return probabilidad;
+    }
+
+    public void setProbabilidad(Double probabilidad) {
+        this.probabilidad = probabilidad;
     }
 
     public String getDatosJson() {

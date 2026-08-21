@@ -7,16 +7,18 @@ public class DocumentoResponse {
     private String titulo;
     private String textoOriginal;
     private String categoria;
+    private Double probabilidad;
     private String datosJson;
     private LocalDateTime fechaCreacion;
 
     public DocumentoResponse() {}
 
-    public DocumentoResponse(String id, String titulo, String textoOriginal, String categoria, String datosJson, LocalDateTime fechaCreacion) {
+    public DocumentoResponse(String id, String titulo, String textoOriginal, String categoria, Double probabilidad, String datosJson, LocalDateTime fechaCreacion) {
         this.id = id;
         this.titulo = titulo;
         this.textoOriginal = textoOriginal;
         this.categoria = categoria;
+        this.probabilidad = probabilidad;
         this.datosJson = datosJson;
         this.fechaCreacion = fechaCreacion;
     }
@@ -51,6 +53,14 @@ public class DocumentoResponse {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public Double getProbabilidad() {
+        return probabilidad;
+    }
+
+    public void setProbabilidad(Double probabilidad) {
+        this.probabilidad = probabilidad;
     }
 
     public String getDatosJson() {

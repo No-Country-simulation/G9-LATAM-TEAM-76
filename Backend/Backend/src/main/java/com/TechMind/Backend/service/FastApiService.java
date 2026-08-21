@@ -14,7 +14,7 @@ public class FastApiService {
 
     private final RestClient restClient;
 
-    @Value("${fastapi.url:http://localhost:8000/analyze}")
+    @Value("${fastapi.url:${MODEL_API_URL:https://techmind-hackathon.duckdns.org/api/contenido}}")
     private String fastApiUrl;
 
     public FastApiService(RestClient restClient) {
